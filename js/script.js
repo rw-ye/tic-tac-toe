@@ -9,22 +9,18 @@ const gameBoard = (() => {
 
   const checkWin = () => {
     const winConditions = [
-      [0, 1, 2],
-      [3, 4, 5],
-      [6, 7, 8], // rows
-      [0, 3, 6],
-      [1, 4, 7],
-      [2, 5, 8], // columns
-      [0, 4, 8],
-      [2, 4, 6] // diagonals
+      [0, 1, 2], [3, 4, 5], [6, 7, 8], // rows
+      [0, 3, 6], [1, 4, 7], [2, 5, 8], // columns
+      [0, 4, 8], [2, 4, 6] // diagonals
     ];
 
-    for (let i = 0; i < winConditions.length; i++) {
-      const [a, b, c] = winConditions[i];
+    for (const condition of winConditions) {
+      const [a, b, c] = condition;
       if (board[a] && board[a] === board[b] && board[a] === board[c]) {
         return true;
       }
     }
+
 
     return false;
   };
@@ -61,33 +57,53 @@ const Player = (name, marker) => {
 };
 
 
+const playerSetup = (() => {
+
+
+
+})();
+
+
 
 const displayController = (() => {
   const gameBoardCells = document.querySelectorAll('.item');
-  const playerOne = Player('Rhys', 'O');
-  const playerTwo = Player('Joe', 'X');
-
-  let currentPlayer = playerOne;
+  const playButton = document.querySelector('.playBtn');
 
 
-  gameBoardCells.forEach((element, index) => {
-    element.addEventListener('click', () => {
-      if (gameBoard.board[index] === '') {
-        gameBoard.board[index] = currentPlayer.getMarker();
-        element.textContent = gameBoard.board[index];
-        element.removeEventListener('click', () => {});
 
-        if (gameBoard.checkWin()) {
-          console.log(`${currentPlayer.getName()} wins!`);
-          gameBoard.resetBoard(gameBoardCells);
+  playButton.addEventListener('click', () => {
+    gameBoard.resetBoard(gameBoardCells);
+
+
+
+    const playerOne = Player('Rhys', 'O');
+    const playerTwo = Player('Joe', 'X');
+
+    let currentPlayer = playerOne;
+
+
+    gameBoardCells.forEach((element, index) => {
+      element.addEventListener('click', () => {
+        if (gameBoard.board[index] === '') {
+          gameBoard.board[index] = currentPlayer.getMarker();
+          element.textContent = gameBoard.board[index];
+          element.removeEventListener('click', () => { });
+
+          if (gameBoard.checkWin()) {
+            console.log(`${currentPlayer.getName()} wins!`);
+            gameBoard.resetBoard(gameBoardCells);
+          }
+
+
+          if (!gameBoard.board.includes('')) {
+            console.log("It's a draw!");
+            gameBoard.resetBoard(gameBoardCells);
+          }
+          currentPlayer = currentPlayer === playerOne ? playerTwo : playerOne;
         }
+      })
+    });
 
-        currentPlayer = currentPlayer === playerOne ? playerTwo : playerOne;
-
-      } else {
-        console.log("A marker has already been placed there");
-      }
-    })
   });
 
 })();

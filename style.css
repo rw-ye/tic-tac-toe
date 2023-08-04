@@ -9,19 +9,25 @@
   display: grid;
   grid-template-rows: repeat(var(--row), 100px);
   grid-template-columns: repeat(var(--column), 100px);
-  margin: auto;
-  border: 1px solid black;
-
-
+  justify-content: center;
+  margin-top: 100px;
 }
 
 .item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border: 1px solid black;
-  padding: 10px;
+
 }
 
 
 body, html {
   height: 100%;
   display: grid;
+}
+
+.playBtn {
+  margin: 0 auto;
+  width: 50%;
 }
